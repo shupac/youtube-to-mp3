@@ -30,8 +30,8 @@
     "ffmpeg-static": "^4.2.3",
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^7.0.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "sanitize-filename": "^1.6.1",
     "webpack": "^4.27.1",
     "ytdl-core": "^2.1.7"

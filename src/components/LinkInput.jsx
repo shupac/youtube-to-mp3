@@ -1,66 +1,33 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class LinkInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputValue: '',
-      showError: false,
-    };
+function LinkInput ({ url, updateUrl, startDownload }) {
+  const [hasError, setError] = useState(false);
 
-    this.updateInputValue = this.updateInputValue.bind(this);
-    this.startDownload = this.startDownload.bind(this);
-    this.getIdFromUrl = this.getIdFromUrl.bind(this);
-  }
-
-  getIdFromUrl(url) {
-    let id = '';
-    let regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = url.match(regExp);
-
-    if (match && match[2].length == 11) {
-      return match[2];
-    } else {
-      return null;
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (!url) {
+      setError(true);
+      return;
     }
+    startDownload(url);
+    setError(false);
   }
 
-  updateInputValue(e) {
-    this.setState({
-      inputValue: e.target.value,
-      showError: false,
-    });
-  }
-
-  startDownload() {
-    const { inputValue } = this.state;
-    let id = this.getIdFromUrl(inputValue);
-    if (id === null) {
-      this.setState({
-        showError: true,
-      });
-    } else {
-      this.props.startDownload(inputValue);
-    }
-  }
-
-  render() {
-    let className = `link__input${this.state.showError ? '--error' : ''}`;
-    return (
-      <div>
-        <input
-          className={className}
-          onChange={this.updateInputValue}
-          placeholder="https://www.youtube.com/watch?v=zmXUWKwxDg4"
-        />
-        <div className="center">
-          <button className="link__button" onClick={this.startDownload}>
-            Convert to .mp3
-          </button>
-        </div>
+  const className = `link__input${hasError ? '--error' : ''}`;
+  return (
+    <form onSubmit="onSubmit">
+      <input
+        className={className}
+        onChange={updateUrl}
+        placeholder="https://www.youtube.com/watch?v=zmXUWKwxDg4"
+      />
+      <div className="center">
+        <button className="link__button" onClick={onSubmit}>
+          Convert to MP3
+        </button>
       </div>
-    );
-  }
+    </form>
+  );
 }
 
 export default LinkInput;

@@ -16,6 +16,7 @@ class AppContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      url: '',
       showProgressBar: false,
       progress: 0,
       bitrate: localStorage.getItem('userBitrate')
@@ -44,6 +45,14 @@ class AppContainer extends Component {
     this.startDownload = this.startDownload.bind(this);
     this.downloadFinished = this.downloadFinished.bind(this);
     this.changeOutputFolder = this.changeOutputFolder.bind(this);
+    this.updateUrl = this.updateUrl.bind(this);
+  }
+
+  updateUrl(e) {
+    e.preventDefault();
+    this.setState({
+      url: e.target.value
+    });
   }
 
   getVideoAsMp4(urlLink, userProvidedPath, title) {
@@ -214,6 +223,7 @@ class AppContainer extends Component {
   }
 
   render() {
+    const { url } = this.state;
     if (this.state.showProgressBar) {
       return (
         <ProgressBar
@@ -222,7 +232,7 @@ class AppContainer extends Component {
         />
       );
     } else {
-      return <LinkInput startDownload={this.startDownload} />;
+      return <LinkInput url={url} updateUrl={this.updateUrl} startDownload={this.startDownload} />;
     }
   }
 }
