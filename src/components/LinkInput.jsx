@@ -33,13 +33,14 @@ class LinkInput extends Component {
     }
 
     startDownload() {
-        let id = this.getIdFromUrl(this.state.inputValue);
+        const { inputValue } = this.state;
+        let id = this.getIdFromUrl(inputValue);
         if (id === null) {
             this.setState({
                 showError: true
             });
         } else {
-            this.props.startDownload(id);
+            this.props.startDownload(inputValue);
         }
     }
 

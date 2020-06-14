@@ -13,18 +13,18 @@ YouTube To MP3 is a desktop application for converting and downloading YouTube v
 
 ### Stack
 
--   [Electron](https://github.com/electron/electron) - Cross platform framework for native platforms
--   [React](https://github.com/facebook/react) - UI framework
--   [Sass](https://github.com/sass/sass) - CSS with superpowers
--   [Webpack](https://webpack.js.org/) - A module bundler for JavaScript
+- [Electron](https://github.com/electron/electron) - Cross platform framework for native platforms
+- [React](https://github.com/facebook/react) - UI framework
+- [Sass](https://github.com/sass/sass) - CSS with superpowers
+- [Webpack](https://webpack.js.org/) - A module bundler for JavaScript
 
 ### Future Ideas
 
--   [x] Different bitrate and format options
--   [x] Test on other operating systems
--   [x] Support downloading long videos (> 1 hour)
--   [ ] Downloading videos as well as MP3s
--   [ ] Multiple downloads at a time
+- [x] Different bitrate and format options
+- [x] Test on other operating systems
+- [x] Support downloading long videos (> 1 hour)
+- [ ] Downloading videos as well as MP3s
+- [ ] Multiple downloads at a time
 
 ### Running Locally
 

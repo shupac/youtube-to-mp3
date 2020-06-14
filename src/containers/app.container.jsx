@@ -6,7 +6,7 @@ import React, {Component} from 'react';
 import * as path from 'path';
 
 const ffmpeg = window.require('fluent-ffmpeg');
-const binaries = window.require('ffmpeg-binaries');
+const pathToFfmpeg = window.require('ffmpeg-static');
 const sanitize = window.require('sanitize-filename');
 const {ipcRenderer, remote} = window.require('electron');
 const ytdl = window.require('ytdl-core');
@@ -50,11 +50,16 @@ class AppContainer extends Component {
         title = sanitize(title);
         return new Promise((resolve, reject) => {
             let fullPath = path.join(userProvidedPath, `tmp_${title}.mp4`);
+            // console.log('fullPath', fullPath)
 
             // Create a reference to the stream of the video being downloaded.
-            let videoObject = ytdl(urlLink, {filter: 'audioonly'});
+            let videoObject = ytdl(urlLink, {
+                quality: 'highest',
+                filter: 'audioonly'
+            });
 
             videoObject.on('progress', (chunkLength, downloaded, total) => {
+                console.log('progress');
                 // When the stream emits a progress event, we capture the currently downloaded amount and the total
                 // to download, we then divided the downloaded by the total and multiply the result to get a float of
                 // the percent complete, which is then passed through the Math.floor function to drop the decimals.
@@ -77,13 +82,18 @@ class AppContainer extends Component {
                 // completion of step. Then we return the path to the temp file, the output path, and the desired filename.
                 this.setState({progress: 100});
                 setTimeout(() => {
-                    resolve({filePath: fullPath, folderPath: userProvidedPath, fileTitle: `${title}.mp3`});
+                    resolve({
+                        filePath: fullPath,
+                        folderPath: userProvidedPath,
+                        fileTitle: `${title}.mp3`
+                    });
                 }, 1000);
             });
         });
     }
 
     convertMp4ToMp3(paths) {
+        console.log('convertMp4ToMp3');
         // Tell the user we are starting to convert the file to mp3.
         this.setState({progressMessage: 'Converting...', progress: 0});
 
@@ -93,7 +103,7 @@ class AppContainer extends Component {
 
             // Pass ffmpeg the temp mp4 file. Set the path where is ffmpeg binary for the platform. Provided desired format.
             ffmpeg(paths.filePath)
-                .setFfmpegPath(binaries.ffmpegPath())
+                .setFfmpegPath(pathToFfmpeg)
                 .format('mp3')
                 .audioBitrate(this.state.bitrate)
                 .on('progress', (progress) => {
@@ -116,7 +126,8 @@ class AppContainer extends Component {
         });
     }
 
-    async startDownload(id) {
+    async startDownload(url) {
+        console.log('startDownload');
         // Reset state for each download/conversion
         this.setState({
             progress: 0,
@@ -127,12 +138,13 @@ class AppContainer extends Component {
         try {
             // Tell the user we are getting the video info, and call the function to do so.
             this.setState({progressMessage: 'Fetching video info...'});
-            let info = await ytdl.getInfo(id);
+            const id = ytdl.getURLVideoID(url);
+            const info = await ytdl.getInfo(url);
 
             // Given the id of the video, the path in which to store the output, and the video title
             // download the video as an audio only mp4 and write it to a temp file then return
             // the full path for the tmp file, the path in which its stored, and the title of the desired output.
-            let paths = await this.getVideoAsMp4(id, this.state.userDownloadsFolder, info.title);
+            const paths = await this.getVideoAsMp4(url, this.state.userDownloadsFolder, info.title);
 
             // Pass the returned paths and info into the function which will convert the mp4 tmp file into
             // the desired output mp3 file.

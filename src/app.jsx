@@ -5,9 +5,9 @@ import AppContainer from './containers/app.container';
 import './styles/global.scss';
 
 class App extends React.Component {
-    render() {
-        return <AppContainer />;
-    }
+  render() {
+    return <AppContainer />;
+  }
 }
 
 // Render to index.html
