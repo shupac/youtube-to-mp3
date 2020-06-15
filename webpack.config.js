@@ -1,5 +1,5 @@
 const path = require('path');
-let HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/app.jsx',
@@ -14,9 +14,14 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader'],
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
       },
       {
         test: /\.(scss|css)$/,
@@ -33,6 +38,6 @@ module.exports = {
     }),
   ],
   optimization: {
-    minimize: false,
+    // minimize: false,
   },
 };

@@ -112,8 +112,6 @@ function createWindow() {
     });
   }
 
-  mainWindow.webContents.openDevTools();
-
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
   mainWindow.on('closed', function () {

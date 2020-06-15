@@ -14,6 +14,7 @@ function LinkInput ({ url, updateUrl, startDownload }) {
   }
 
   const className = `link__input${hasError ? '--error' : ''}`;
+
   return (
     <form onSubmit="onSubmit">
       <input
