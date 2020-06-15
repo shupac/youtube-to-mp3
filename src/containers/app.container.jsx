@@ -36,7 +36,6 @@ function AppContainer (props) {
   let rateLimitTriggered = false;
 
   useEffect(() => {
-    alert('effect');
     ipcRenderer.on('changeBitrate', (event, newBitrate) => {
       setBitrate(newBitrate);
       localStorage.setItem('userBitrate', newBitrate.toString());
